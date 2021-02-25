@@ -6,12 +6,17 @@ import reportWebVitals from './reportWebVitals';
 
 // We are importing a thing *named* createStore
 // from the redux node module.
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 
 // State: this is your data!
 // Describe what state looks like, as a default value
 const defaultState = {
-  balance: 50
+  banking: {
+    amount: 50
+  },
+  investment: {
+    amount: 100
+  }
 };
 
 // Actions: these are your "withdrawal" and "deposit" slips
@@ -34,31 +39,48 @@ const defaultState = {
 //     amount: 100000000
 //   }
 // }
-const WITHDRAW = 'withdraw';
-const DEPOSIT = 'deposit';
+const BANKING_WITHDRAW = 'banking/withdraw';
+const BANKING_DEPOSIT = 'banking/deposit';
+const INVESTMENT_WITHDRAW = 'investment/withdraw';
+const INVESTMENT_DEPOSIT = 'investment/deposit';
 // Write Action Creator functions that generate those action objects!!!!
-const deposit = (amount) => (
+const bankingDeposit = (amount) => (
   {
-    type: DEPOSIT, // not an arg, because typos!
+    type: BANKING_DEPOSIT, // not an arg, because typos!
     payload: {
       amount
     }
   }  
 );
 
-const withdraw = (amount) => (
+const bankingWithdraw = (amount) => (
   {
-    type: WITHDRAW,
+    type: BANKING_WITHDRAW,
     payload: {
       amount
     }
   }
 )
 
+const investmentDeposit = (amount) => (
+  {
+    type: INVESTMENT_DEPOSIT,
+    payload: {
+      amount
+    }
+  }
+);
+const investmentWithdraw = (amount) => (
+  {
+    type: INVESTMENT_WITHDRAW,
+    payload: {
+      amount
+    }
+  }
+);
 
 // Reducer: this calculates how an action changes state
-const bankTeller = (state, action) => {
-  
+const banking = (state=defaultState.banking, action) => {
   if (!action) return state;
   if (!action.payload) return state;
 
@@ -70,11 +92,11 @@ const bankTeller = (state, action) => {
   // - see if you're doing a withrawal or deposit
   //      it receives the action
   switch (action.type) {
-    case DEPOSIT:
-      newState.balance += action.payload.amount;
+    case BANKING_DEPOSIT:
+      newState.amount += action.payload.amount;
       break;
-      case WITHDRAW:
-      newState.balance -= action.payload.amount;
+      case BANKING_WITHDRAW:
+      newState.amount -= action.payload.amount;
       break;
     default:
       // no change
@@ -86,15 +108,43 @@ const bankTeller = (state, action) => {
   return newState;
 }
 
+const investment = (state=defaultState.investment, action) => {
+  if (!action) return state;
+  if (!action.payload) return state;
+  
+  let newState = {
+    ...state
+  };
+
+  switch (action.type) {
+    case INVESTMENT_DEPOSIT:
+      newState.amount += action.payload.amount;
+      break;
+      case INVESTMENT_WITHDRAW:
+      newState.amount -= action.payload.amount;
+      break;
+    default:
+      break;
+  }
+
+  return newState;
+}
+
 // The store: spoiler alert - redux gives you a function to create one!
-const store = createStore(bankTeller, defaultState);
+const rootReducer = combineReducers({
+  banking,
+  investment
+});
+const store = createStore(rootReducer, defaultState);
 // .subscribe() - you pass it a function, it runs your function when state changes
 // .dispatch() - you pass it an action, it calls the reducer and updates state
 
 // Because we're not using React yet, we'll attach some things to the global window object:
 window.store = store;
-window.deposit = deposit;
-window.withdraw = withdraw;
+window.bankingDeposit = bankingDeposit;
+window.bankingWithdraw = bankingWithdraw;
+window.investmentDeposit = investmentDeposit;
+window.investmentWithdraw = investmentWithdraw;
 
 
 // Step two, set up automatic console.log() when the state changes
