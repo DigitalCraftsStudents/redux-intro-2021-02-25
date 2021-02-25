@@ -43,7 +43,25 @@ const BANKING_WITHDRAW = 'banking/withdraw';
 const BANKING_DEPOSIT = 'banking/deposit';
 const INVESTMENT_WITHDRAW = 'investment/withdraw';
 const INVESTMENT_DEPOSIT = 'investment/deposit';
+const TRANSFER = 'transfer';
+const ACCOUNT_BANKING = 'banking';
+const ACCOUNT_INVESTMENT = 'investment';
 // Write Action Creator functions that generate those action objects!!!!
+
+const transfer = (amount, from, to) => (
+  from === to ? { type: ''}  // If `from` and `to` are the same, 
+                             // return an empty type
+  :                          // Otherwise, return an action object
+  {
+    type: TRANSFER,
+    payload: {
+      amount,
+      from,
+      to
+    }
+  }
+);
+
 const bankingDeposit = (amount) => (
   {
     type: BANKING_DEPOSIT, // not an arg, because typos!
@@ -95,8 +113,15 @@ const banking = (state=defaultState.banking, action) => {
     case BANKING_DEPOSIT:
       newState.amount += action.payload.amount;
       break;
-      case BANKING_WITHDRAW:
+    case BANKING_WITHDRAW:
       newState.amount -= action.payload.amount;
+      break;
+    case TRANSFER:
+      if (action.payload.from === ACCOUNT_BANKING) {
+        newState.amount -= action.payload.amount;
+      } else if (action.payload.to === ACCOUNT_BANKING) {
+        newState.amount += action.payload.amount;
+      }
       break;
     default:
       // no change
@@ -120,8 +145,15 @@ const investment = (state=defaultState.investment, action) => {
     case INVESTMENT_DEPOSIT:
       newState.amount += action.payload.amount;
       break;
-      case INVESTMENT_WITHDRAW:
+    case INVESTMENT_WITHDRAW:
       newState.amount -= action.payload.amount;
+      break;
+    case TRANSFER:
+      if (action.payload.from === ACCOUNT_INVESTMENT) {
+        newState.amount -= action.payload.amount;
+      } else if (action.payload.to === ACCOUNT_INVESTMENT) {
+        newState.amount += action.payload.amount;
+      }
       break;
     default:
       break;
@@ -145,7 +177,9 @@ window.bankingDeposit = bankingDeposit;
 window.bankingWithdraw = bankingWithdraw;
 window.investmentDeposit = investmentDeposit;
 window.investmentWithdraw = investmentWithdraw;
-
+window.transfer = transfer;
+window.ACCOUNT_BANKING = ACCOUNT_BANKING;
+window.ACCOUNT_INVESTMENT = ACCOUNT_INVESTMENT;
 
 // Step two, set up automatic console.log() when the state changes
 store.subscribe(() => {
