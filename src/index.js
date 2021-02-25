@@ -71,10 +71,28 @@ const bankTeller = (state, action) => {
   //      it receives the action
   switch (action.type) {
     case DEPOSIT:
+      // do they already have 500?
+      // if so, let's give them an additional 1% of their deposit!
+      console.log('depositing!');
+      console.log(`they currently have ${newState.balance}`);
+      let bonus = 0;
+      if (newState.balance >= 500) {
+        console.log(`**** bonus!!!! ****`);
+        bonus = action.payload.amount * 0.01;
+      }
       newState.balance += action.payload.amount;
+      newState.balance += bonus;
+      console.log(`they will have ${newState.balance}`);
       break;
-      case WITHDRAW:
-      newState.balance -= action.payload.amount;
+    case WITHDRAW:
+        let penalty = 0;
+        if (newState.balance - action.payload.amount < 0) {
+          // newState.balance = 0;
+          console.log(`____PENALTY____`);
+          penalty = 25;        
+        }
+        newState.balance -= action.payload.amount;
+        newState.balance -= penalty;
       break;
     default:
       // no change
@@ -103,6 +121,7 @@ store.subscribe(() => {
   console.table(store.getState());
 });
 
+store.dispatch(deposit(50));
 
 
 
