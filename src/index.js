@@ -205,7 +205,11 @@ const rootReducer = combineReducers({
 
 
 
-const store = createStore(rootReducer, defaultState);
+const store = createStore(
+  rootReducer, 
+  defaultState,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 // .subscribe() - you pass it a function, it runs your function when state changes
 // .dispatch() - you pass it an action, it calls the reducer and updates state
 
