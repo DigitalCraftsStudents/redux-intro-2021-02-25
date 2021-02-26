@@ -1,7 +1,8 @@
 // Smart Container
 import Banking from '../components/Banking';
 import {
-    bankingDeposit
+    bankingDeposit,
+    bankingWithdraw
 } from '../actions';
 import { connect } from 'react-redux';
 
@@ -17,11 +18,16 @@ const mapDispatchToProps = (dispatch) => {
     return {
         deposit: (amount) => {
             dispatch(bankingDeposit(amount));
+        },
+        withdraw: (amount) => {
+            dispatch(bankingWithdraw(amount));
         }
     }
-}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Banking);
 // connect those two things to the dumb component
-const ironManSuit = connect(mapStateToProps, mapDispatchToProps);
-const ironMan = ironManSuit(Banking);
-// export the new, connected component that has some redux smarts wired to it
-export default ironMan;
+// const ironManSuit = connect(mapStateToProps, mapDispatchToProps);
+// const ironMan = ironManSuit(Banking);
+// // export the new, connected component that has some redux smarts wired to it
+// export default ironMan;
