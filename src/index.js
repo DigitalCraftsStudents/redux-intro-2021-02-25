@@ -16,6 +16,9 @@ const defaultState = {
   },
   investment: {
     amount: 100
+  },
+  transactions: {
+    transactions: []
   }
 };
 
@@ -133,6 +136,7 @@ const banking = (state=defaultState.banking, action) => {
   return newState;
 }
 
+
 const investment = (state=defaultState.investment, action) => {
   if (!action) return state;
   if (!action.payload) return state;
@@ -162,11 +166,45 @@ const investment = (state=defaultState.investment, action) => {
   return newState;
 }
 
+const transactions = (state=defaultState.transactions, action) => {
+  if (!action) return state;
+  if (!action.payload) return state;
+  
+  let newState = {
+    ...state
+  };
+
+  switch (action.type) {
+    // case DEPOSIT:  // Intentional fallthrough
+    // case WITHDRAW:
+    //   break;
+    default:
+      console.log('*****💰 Adding transaction 💰*****');
+      newState.transactions = [     // Immutability-friendly
+                                    // "push()"
+        ...newState.transactions,
+        {
+          type: action.type,
+          date: new Date(),
+          ...action.payload,
+        }
+      ]
+      // no change
+      break;
+  }
+
+  return newState;    
+}
+
 // The store: spoiler alert - redux gives you a function to create one!
 const rootReducer = combineReducers({
   banking,
-  investment
+  investment,
+  transactions
 });
+
+
+
 const store = createStore(rootReducer, defaultState);
 // .subscribe() - you pass it a function, it runs your function when state changes
 // .dispatch() - you pass it an action, it calls the reducer and updates state

@@ -9,6 +9,7 @@
 
 - if balance is higher than 500, reward them with +1% of the deposit amount
 
+<<<<<<< HEAD
 # Activity 2: three accounts, three reducers
 
 Work from the `multiple-accounts` branch and add:
@@ -20,3 +21,14 @@ Work from the `multiple-accounts` branch and add:
 Then include the new reducer in the call to `combineReducers()`.
 
 To test, add the new action creators and any additional constants to the `window` object.
+=======
+# Storing Arrays in State:
+
+Next example: add a Transactions slice + reducer to app.
+
+- add an entry for every deposit/withdrawal
+- include date
+
+
+Allows us to show all transactions as a list in React (that updates in real-time).
+>>>>>>> transactions-array
