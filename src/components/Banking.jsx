@@ -1,5 +1,6 @@
 // A dumb component!
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function Banking(props) {
     const [depositAmount, setDepositAmount] = useState(1);
@@ -9,9 +10,22 @@ function Banking(props) {
             <h1>Banking balance: {props.banking} </h1>
             <section>
                 <h2>Make a deposit</h2>
-                <form onSubmit={(e) => {
+                <form onSubmit={async (e) => {
                     e.preventDefault();
-                    props.deposit(depositAmount);
+                    // axios here!
+                    try {
+                        const resp = await axios.put('/api/banking', {
+                            // FIXME: duplicate logic
+                            amount: props.banking + depositAmount
+                        });
+                        console.log(resp.data);
+                        // if we get a good response, then:
+                        // record in redux, then clear the form
+                        props.deposit(depositAmount);
+                        setDepositAmount('');
+                    } catch (e) {
+                        console.log('uh oh - it did not go through');
+                    }
                 }}>
                     <label>
                         Deposit Amount:
@@ -30,9 +44,21 @@ function Banking(props) {
             </section>
             <section>
                 <h2>Make a withdrawal</h2>
-                <form onSubmit={(e) => {
+                <form onSubmit={async (e) => {
                     e.preventDefault();
-                    props.withdraw(withdrawAmount);
+                    try {
+                        const resp = await axios.put('/api/banking', {
+                            // FIXME: duplicate logic
+                            amount: props.banking - withdrawAmount
+                        });
+                        console.log(resp.data);
+                        // if we get a good response, then:
+                        // record in redux, then clear the form
+                        props.withdraw(withdrawAmount);
+                        setDepositAmount('');
+                    } catch (e) {
+                        console.log('uh oh - it did not go through');
+                    }                    
                 }}>
                     <label>
                         Withdrawal Amount:

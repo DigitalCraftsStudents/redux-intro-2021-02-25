@@ -44,5 +44,29 @@ Allows us to show all transactions as a list in React (that updates in real-time
 # Activity 3:
 
 - add an Investments component with two forms (one for deposit, one for withdrawal)
-- add a Transfer component (allowing transfer between banking and investment accounts)
 - Confirm that all 5 kinds of actions create new `<li>` elements to appear in the Transactions component
+
+
+
+
+
+# Axios calls to API
+
+
+## On banking deposit/withdrawal
+
+Update the API
+
+## On investment deposit/withdrawal
+
+Update the API
+
+## On page load...get data from API
+
+Get the initial data from the API.
+Put this in the defaultState?
+Maybe we want to replace the state?!
+
+## On any transaction
+
+Update the API
