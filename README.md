@@ -40,3 +40,9 @@ Allows us to show all transactions as a list in React (that updates in real-time
     - mapDispatchToProps()
 - Connected Components
 
+
+# Activity 3:
+
+- add an Investments component with two forms (one for deposit, one for withdrawal)
+- add a Transfer component (allowing transfer between banking and investment accounts)
+- Confirm that all 5 kinds of actions create new `<li>` elements to appear in the Transactions component

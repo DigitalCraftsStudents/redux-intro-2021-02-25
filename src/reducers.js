@@ -13,7 +13,7 @@ const defaultState = {
       amount: 25
     },
     investment: {
-      amount: 100
+      amount: 1
     },
     transactions: {
       transactions: []
