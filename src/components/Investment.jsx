@@ -8,7 +8,10 @@ function Investment(props) {
             <h1>Investment balance: {props.investment}</h1>
             <section>
                 <h2>Make a deposit</h2>
-                <form>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    props.deposit(depositAmount);
+                }}>
                     <label>
                         Deposit Amount:
                         <input 
@@ -27,7 +30,10 @@ function Investment(props) {
             </section>
             <section>
                 <h2>Make a withdrawal</h2>
-                <form>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    props.withdraw(withdrawalAmount);
+                }}>
                     <label>
                         Withdrawal Amount:
                         <input 
