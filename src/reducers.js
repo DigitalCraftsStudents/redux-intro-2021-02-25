@@ -6,6 +6,7 @@ import {
     TRANSFER,
     ACCOUNT_BANKING,
     ACCOUNT_INVESTMENT,
+    GET_DATA,
 } from './actions'
 
 const defaultState = {
@@ -33,6 +34,10 @@ export const banking = (state=defaultState.banking, action) => {
     // - see if you're doing a withrawal or deposit
     //      it receives the action
     switch (action.type) {
+      case GET_DATA:
+        // replace old data
+        newState.amount = action.payload.banking;
+        break;
       case BANKING_DEPOSIT:
         newState.amount += action.payload.amount;
         break;
@@ -66,6 +71,10 @@ export const banking = (state=defaultState.banking, action) => {
     };
   
     switch (action.type) {
+      case GET_DATA:
+        // replace old data
+        newState.amount = action.payload.investment;
+        break;
       case INVESTMENT_DEPOSIT:
         newState.amount += action.payload.amount;
         break;
@@ -98,6 +107,13 @@ export const banking = (state=defaultState.banking, action) => {
       // case DEPOSIT:  // Intentional fallthrough
       // case WITHDRAW:
       //   break;
+      case GET_DATA:
+        // replace old data
+        newState.transactions = action.payload.transactions.map(t => ({
+          ...t,
+          date: new Date(t.date)
+        }));
+        break;
       default:
         console.log('*****💰 Adding transaction 💰*****');
         newState.transactions = [     // Immutability-friendly

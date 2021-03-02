@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+export const GET_DATA = 'get-data';
 export const BANKING_WITHDRAW = 'banking/withdraw';
 export const BANKING_DEPOSIT = 'banking/deposit';
 export const INVESTMENT_WITHDRAW = 'investment/withdraw';
@@ -58,6 +59,22 @@ export const investmentWithdraw = (amount) => (
   }
 );
 
+export const setData = (data) => (
+  {
+    type: GET_DATA,
+    payload: {
+      ...data
+    }
+  }
+)
+
+export const apiGetData = () => {
+  return async (dispatch, getState) => {
+    const current = await axios.get('/api');
+    dispatch(setData(current.data));
+  };
+}
+
 export const apiBankingDeposit = (depositAmount) => {
   return async (dispatch, getState) => {
 
@@ -69,7 +86,7 @@ export const apiBankingDeposit = (depositAmount) => {
       amount: newAmount
     });
 
-    dispatch(bankingDeposit(newAmount));
+    dispatch(bankingDeposit(depositAmount));
   };
 }
 
@@ -84,6 +101,6 @@ export const apiBankingWithdraw = (withdrawAmount) => {
       amount: newAmount
     });
 
-    dispatch(bankingDeposit(newAmount));
+    dispatch(bankingWithdraw(withdrawAmount));
   };
 }

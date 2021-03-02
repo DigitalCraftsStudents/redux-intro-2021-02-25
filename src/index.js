@@ -13,6 +13,7 @@ import {
   investment,
   transactions  
 } from './reducers';
+import { apiGetData } from './actions';
 
 const rootReducer = combineReducers({
   banking,
@@ -25,6 +26,7 @@ const store = createStore(
   rootReducer,
   enhancers
 );
+store.dispatch(apiGetData());
 
 ReactDOM.render(
   <React.StrictMode>
