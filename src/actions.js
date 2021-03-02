@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const BANKING_WITHDRAW = 'banking/withdraw';
 export const BANKING_DEPOSIT = 'banking/deposit';
 export const INVESTMENT_WITHDRAW = 'investment/withdraw';
@@ -55,3 +57,33 @@ export const investmentWithdraw = (amount) => (
     }
   }
 );
+
+export const apiBankingDeposit = (depositAmount) => {
+  return async (dispatch, getState) => {
+
+    const current = await axios.get('/api/banking');
+    const newAmount = current.data.banking + depositAmount;
+
+    // should wrap with try/catch
+    const resp = await axios.put('/api/banking', {
+      amount: newAmount
+    });
+
+    dispatch(bankingDeposit(newAmount));
+  };
+}
+
+export const apiBankingWithdraw = (withdrawAmount) => {
+  return async (dispatch, getState) => {
+
+    const current = await axios.get('/api/banking');
+    const newAmount = current.data.banking - withdrawAmount;
+
+    // should wrap with try/catch
+    const resp = await axios.put('/api/banking', {
+      amount: newAmount
+    });
+
+    dispatch(bankingDeposit(newAmount));
+  };
+}

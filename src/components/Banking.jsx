@@ -1,6 +1,6 @@
 // A dumb component!
 import React, { useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
 function Banking(props) {
     const [depositAmount, setDepositAmount] = useState(1);
@@ -14,13 +14,6 @@ function Banking(props) {
                     e.preventDefault();
                     // axios here!
                     try {
-                        const resp = await axios.put('/api/banking', {
-                            // FIXME: duplicate logic
-                            amount: props.banking + depositAmount
-                        });
-                        console.log(resp.data);
-                        // if we get a good response, then:
-                        // record in redux, then clear the form
                         props.deposit(depositAmount);
                         setDepositAmount('');
                     } catch (e) {
@@ -47,13 +40,6 @@ function Banking(props) {
                 <form onSubmit={async (e) => {
                     e.preventDefault();
                     try {
-                        const resp = await axios.put('/api/banking', {
-                            // FIXME: duplicate logic
-                            amount: props.banking - withdrawAmount
-                        });
-                        console.log(resp.data);
-                        // if we get a good response, then:
-                        // record in redux, then clear the form
                         props.withdraw(withdrawAmount);
                         setDepositAmount('');
                     } catch (e) {

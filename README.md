@@ -70,3 +70,116 @@ Maybe we want to replace the state?!
 ## On any transaction
 
 Update the API
+
+# Middleware
+
+## First, let's talk about enhancers
+
+Technically, the redux dev tools are a kind of enhancer.
+It lets you modify the store for custom behavior when you `dispatch()`, `subscribe()`, or `getState()`.
+
+
+## What is Redux middleware?
+
+It lets you do something with an action after `dispatch()` but before it arrives at the reducer.
+
+Why would you want to intercept the action before the reducer sees it?
+
+- API communication
+- logging
+
+
+## Great, how does this help me write async code that talks to an API?
+
+Redux has an official middleware that lets you use async functions with `dispatch()`
+
+It's called `redux-thunk`
+
+### What's a "thunk"?
+
+It's a function that performs some delayed action
+
+It's just a function that receives two arguments from the Redux store:
+
+- `dispatch`
+- `getState`
+
+That means that you can `dispatch()` again.
+
+## How do I write one of these?
+
+The most popular option is as an action creator function.
+
+Here's one that gets the inital data from the API:
+
+```js
+
+```
+
+
+
+## How do I use middleware in a Redux application?
+
+
+You have to configure the store to use it:
+
+- import `applyMiddleware` from `redux`
+- pass the middleware to `applyMiddleware()`
+- pass the result as the an additional argument to `createStore()`
+- 
+
+
+```js
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+
+const enhancers = applyMiddleware(thunkMiddleware);
+const store = createStore(store, defaultState, enhancers);
+```
+
+## Wait, what about the dev tools?
+
+There's a module for that!
+
+```sh
+yarn add redux-devtools-extension
+```
+
+
+```js
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunkMiddleware from 'redux-thunk';
+
+const enhancers = composeWithDevTools(applyMiddleware(thunkMiddleware));
+const store = createStore(store, defaultState, enhancers);
+```
+
+
+## What does middleware look even like?
+
+Honestly, it looks super gross:
+
+```js
+function exampleMiddleware(storeAPI) {
+  return function wrapDispatch(next) {
+    return function handleAction(action) {
+      // Do anything here: pass the action onwards with next(action),
+      // or restart the pipeline with storeAPI.dispatch(action)
+      // Can also use storeAPI.getState() here
+
+      return next(action)
+    }
+  }
+}
+```
+
+It gets better if you write it as nested arrow functions with implicit return:
+
+```js
+const anotherExampleMiddleware = storeAPI => next => action => {
+  // Do something in here, when each action is dispatched
+
+  return next(action)
+}
+```

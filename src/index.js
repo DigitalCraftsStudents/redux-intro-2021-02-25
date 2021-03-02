@@ -5,7 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import {
   banking,
   investment,
@@ -18,9 +20,10 @@ const rootReducer = combineReducers({
   transactions
 });
 
+const enhancers = composeWithDevTools(applyMiddleware(thunkMiddleware));
 const store = createStore(
   rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  enhancers
 );
 
 ReactDOM.render(

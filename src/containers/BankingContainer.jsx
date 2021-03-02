@@ -1,8 +1,10 @@
 // Smart Container
 import Banking from '../components/Banking';
 import {
-    bankingDeposit,
-    bankingWithdraw
+    // bankingDeposit,
+    apiBankingDeposit,
+    // bankingWithdraw
+    apiBankingWithdraw
 } from '../actions';
 import { connect } from 'react-redux';
 
@@ -17,10 +19,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         deposit: (amount) => {
-            dispatch(bankingDeposit(amount));
+            dispatch(apiBankingDeposit(amount));
         },
         withdraw: (amount) => {
-            dispatch(bankingWithdraw(amount));
+            dispatch(apiBankingWithdraw(amount));
         }
     }
 };
