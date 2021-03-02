@@ -11,6 +11,7 @@ import {
   investment,
   transactions  
 } from './reducers';
+import { apiGetData } from './actions';
 
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
@@ -29,6 +30,8 @@ const store = createStore(
   rootReducer,
   enhancers
 );
+
+store.dispatch(apiGetData());
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+export const GET_DATA = 'get-data'; // overwrite with stuff from api
 export const BANKING_WITHDRAW = 'banking/withdraw';
 export const BANKING_DEPOSIT = 'banking/deposit';
 export const INVESTMENT_WITHDRAW = 'investment/withdraw';
@@ -7,6 +8,23 @@ export const TRANSFER = 'transfer';
 export const ACCOUNT_BANKING = 'banking';
 export const ACCOUNT_INVESTMENT = 'investment';
 // Write Action Creator functions that generate those action objects!!!!
+
+export const setData = (data) => (
+    {
+        type: GET_DATA,
+        payload: {
+            ...data
+        }
+    }
+);
+
+export const apiGetData = () => {
+    return async (dispatch, getState) => {
+        const current = await axios.get('/api');
+        // dispatch "regular"
+        dispatch(setData(current.data));
+    }
+};
 
 export const transfer = (amount, from, to) => (
   from === to ? { type: ''}  // If `from` and `to` are the same, 
