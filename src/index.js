@@ -5,12 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import {
   banking,
   investment,
   transactions  
 } from './reducers';
+
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunkMiddleware from 'redux-thunk';
 
 const rootReducer = combineReducers({
   banking,
@@ -18,9 +21,13 @@ const rootReducer = combineReducers({
   transactions
 });
 
+const enhancers = composeWithDevTools(
+  applyMiddleware(thunkMiddleware) // creates an enhancer
+);
+
 const store = createStore(
   rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  enhancers
 );
 
 ReactDOM.render(

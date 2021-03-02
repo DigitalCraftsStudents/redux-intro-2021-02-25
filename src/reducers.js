@@ -10,10 +10,10 @@ import {
 
 const defaultState = {
     banking: {
-      amount: 25
+      amount: 2
     },
     investment: {
-      amount: 1
+      amount: 3
     },
     transactions: {
       transactions: []

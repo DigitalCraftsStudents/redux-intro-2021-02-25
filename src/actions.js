@@ -1,3 +1,4 @@
+import axios from 'axios';
 export const BANKING_WITHDRAW = 'banking/withdraw';
 export const BANKING_DEPOSIT = 'banking/deposit';
 export const INVESTMENT_WITHDRAW = 'investment/withdraw';
@@ -55,3 +56,35 @@ export const investmentWithdraw = (amount) => (
     }
   }
 );
+
+
+export const apiBankingDeposit = (depositAmount) => {
+    return async (dispatch, getState) => {
+        // do axios here!
+        // and then dispatch the "regular" version of depositing
+        // 1. get the current amount from api
+        const current = await axios.get('/api/banking');
+        const newAmount = current.data.banking + depositAmount;
+        // 2. update the api with new amount
+        const resp = await axios.put('/api/banking', {
+            amount: newAmount
+        });
+        // 3. dispatch regular version of deposit
+        dispatch(bankingDeposit(depositAmount));
+    };
+};
+
+export const apiBankingWithdraw = (withdrawAmount) => {
+    return async (dispatch, getState) => {
+
+        // 1. get the current amount in api
+        const current = await axios.get('/api/banking');
+        const newAmount = current.data.banking - withdrawAmount;
+        // 2. update the api with new amount
+        const resp = await axios.put('/api/banking', {
+            amount: newAmount
+        })
+        // 3. dispatch regular version of withdraw
+        dispatch(bankingWithdraw(withdrawAmount));
+    }
+}

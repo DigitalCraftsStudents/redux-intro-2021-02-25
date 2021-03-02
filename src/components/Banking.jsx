@@ -12,15 +12,7 @@ function Banking(props) {
                 <h2>Make a deposit</h2>
                 <form onSubmit={async (e) => {
                     e.preventDefault();
-                    // axios here!
                     try {
-                        const resp = await axios.put('/api/banking', {
-                            // FIXME: duplicate logic
-                            amount: props.banking + depositAmount
-                        });
-                        console.log(resp.data);
-                        // if we get a good response, then:
-                        // record in redux, then clear the form
                         props.deposit(depositAmount);
                         setDepositAmount('');
                     } catch (e) {
@@ -47,15 +39,8 @@ function Banking(props) {
                 <form onSubmit={async (e) => {
                     e.preventDefault();
                     try {
-                        const resp = await axios.put('/api/banking', {
-                            // FIXME: duplicate logic
-                            amount: props.banking - withdrawAmount
-                        });
-                        console.log(resp.data);
-                        // if we get a good response, then:
-                        // record in redux, then clear the form
                         props.withdraw(withdrawAmount);
-                        setDepositAmount('');
+                        setWithdrawAmount('');
                     } catch (e) {
                         console.log('uh oh - it did not go through');
                     }                    
